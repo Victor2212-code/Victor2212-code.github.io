@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./imagens/output (1).ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Resultados da Busca</title>
+    <style>
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            transition: all 0.3s ease-in-out;
+        }
+        input[type="text"]:focus {
+            border-color: #0056b3;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 15px rgba(52,152,219,0.25);
+        }
+        button[type="submit"], .cart-icon {
+            padding: 12px 24px;
+            font-size: 16px;
+            background: linear-gradient(145deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover, .cart-icon:hover {
+            background: linear-gradient(145deg, #0056b3, #003875);
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            position: relative; /* Permite posicionamento absoluto do ícone de carrinho */
+            background-color: #fff;
+            margin-bottom: 10px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .cart-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px; /* Posiciona o ícone no canto superior direito */
+            font-size: 24px; /* Tamanho do ícone */
+        }
+        .price, .details {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .price {
+            color: #27ae60;
+        }
+        .details {
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <h1>Resultados da Busca</h1>
+    <form action="/" method="GET">
+        <label for="search_term">Termo de Pesquisa:</label>
+        <input type="text" id="search_term" name="search_term" placeholder="Search..." required>
+        <button type="submit">Buscar</button>
+    </form>
+    <ul>
+        {% for product in products %}
+        <li>
+            <i class="fas fa-shopping-cart cart-icon" onclick="addToCart('{{ product['id'] }}')"></i>
+            <strong class="typing-effect">{{ product['name'] }}</strong><br>
+            <span class="price">Preço: {{ product['price'] }}</span><br>
+            <span class="details">Detalhes: <a href="{{ product['details'] }}" target="_blank">Mais Info</a></span>
+        </li>
+        {% else %}
+            <p>Nenhum produto encontrado.</p>
+        {% endfor %}
+    </ul>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const typingElements = document.querySelectorAll('.typing-effect');
+            function typeText(element) {
+                let text = element.textContent;
+                let index = 0;
+                element.textContent = '';
+                const interval = setInterval(() => {
+                    if (index < text.length) {
+                        element.textContent += text.charAt(index);
+                        index++;
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 50);
+            }
+            typingElements.forEach(element => typeText(element));
+        });
+
+        function addToCart(productId) {
+            console.log("Produto adicionado ao carrinho: " + productId);
+            alert("Produto " + productId + " adicionado ao carrinho!");
+        }
+    </script>
+</body>
+</html>
